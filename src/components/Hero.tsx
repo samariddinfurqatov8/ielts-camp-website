@@ -1,6 +1,8 @@
 import React from 'react';
 import { ArrowRight, BookOpen, CheckCircle, Phone, Award, Sparkles } from 'lucide-react';
 import { TelegramIcon } from './TelegramIcon.js';
+import { SmartImage } from './SmartImage.js';
+import { images } from '../assets/images/index.js';
 
 interface HeroProps {
   onRegisterClick: () => void;
@@ -106,11 +108,14 @@ export const Hero: React.FC<HeroProps> = ({
           {/* Right Column: Visual Anchor */}
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl shadow-black/60 aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] group">
-              <img
-                src="/src/assets/images/hero_ielts_students_1793011909052.jpg"
-                alt="IELTS CAMP o‘quvchilari"
+              <SmartImage
+                src={images.heroStudents}
+                alt="IELTS CAMP o‘quv markazida IELTS imtihoniga tayyorlanayotgan o‘quvchilar va o‘qituvchi"
+                width={1376}
+                height={768}
+                fetchPriority="high"
+                decoding="async"
                 className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500"
-                referrerPolicy="no-referrer"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-transparent pointer-events-none" />
 

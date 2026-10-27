@@ -14,7 +14,7 @@ interface ContactSectionProps {
 export const ContactSection: React.FC<ContactSectionProps> = ({
   onRegisterClick,
   phone = '+998 97 482 06 26',
-  address = 'Toshkent shahri, Yunusobod tumani (Mo‘ljal: Shahriston metro yaqinida)',
+  address = 'Jizzax viloyati, Zomin tumani, Yom qishlog‘i',
   workHours = 'Dushanba – Shanba: 09:00 – 19:00',
   telegramUrl = 'https://t.me/diyorbek_mirzaolim0v',
   telegramUsername = '@diyorbek_mirzaolim0v',
@@ -117,7 +117,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   Kurslarga ro‘yxatdan o‘tishga tayyormisiz?
                 </h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  Online ariza qoldiring yoki administratorimiz bilan Telegram orqali to‘g‘ridan-to‘g‘ri bog‘laning.
+                  Arizadan o‘tish uchun administratorimiz bilan Telegram orqali to‘g‘ridan-to‘g‘ri bog‘laning.
                 </p>
               </div>
 

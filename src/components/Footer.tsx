@@ -95,7 +95,7 @@ export const Footer: React.FC<FooterProps> = ({
               </button>
             )}
             <span aria-hidden="true">·</span>
-            <span>Toshkent, O‘zbekiston</span>
+            <span>Zomin, Jizzax viloyati</span>
           </div>
         </div>
       </div>
