@@ -1,6 +1,7 @@
 import React from 'react';
 import { ArrowRight, BookOpen, CheckCircle, Phone, Award, Sparkles } from 'lucide-react';
 import { TelegramIcon } from './TelegramIcon.js';
+import heroImg from '../assets/images/hero_ielts_students_1793011909052.jpg';
 
 interface HeroProps {
   onRegisterClick: () => void;
@@ -107,7 +108,7 @@ export const Hero: React.FC<HeroProps> = ({
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl shadow-black/60 aspect-[4/3] sm:aspect-[16/10] lg:aspect-[4/3] group">
               <img
-                src="/src/assets/images/hero_ielts_students_1793011909052.jpg"
+                src={heroImg}
                 alt="IELTS CAMP o‘quvchilari"
                 className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500"
                 referrerPolicy="no-referrer"

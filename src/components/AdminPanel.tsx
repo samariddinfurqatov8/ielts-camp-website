@@ -82,7 +82,7 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ user, token, onLogout, o
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({
     phone: '+998 97 482 06 26',
     email: 'info@ieltscamp.uz',
-    address: 'Toshkent shahri, Yunusobod tumani (Mo‘ljal: Shahriston metro yaqinida)',
+    address: 'Jizzax viloyati, Zomin tumani, Yom qishlog‘i',
     hero_title: 'Kelajagingizni bilim bilan quring!',
     hero_subtitle:
       'Ingliz tili, CEFR va tarix fanlaridan bilimlaringizni rivojlantiring. O‘zingizga mos kursni tanlang va IELTS CAMP bilan ta’lim yo‘lingizni boshlang.',
