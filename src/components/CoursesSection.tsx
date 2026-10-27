@@ -1,6 +1,45 @@
 import React from 'react';
 import { Course, Group } from '../types.js';
-import { ArrowRight, Clock, Calendar, AlertCircle, RefreshCw, Info, CheckCircle, Sparkles } from 'lucide-react';
+import { ArrowRight, Clock, Calendar, Info, MapPin } from 'lucide-react';
+import englishImg from '../assets/images/course_english_cefr_1793011909104.jpg';
+import historyImg from '../assets/images/course_history_study_1793011909432.jpg';
+
+const CENTER_ADDRESS = 'Jizzax viloyati, Zomin tumani, Yom qishlog‘i';
+
+// Static course list shown whenever the API is unavailable
+const STATIC_COURSES: Course[] = [
+  {
+    id: 1,
+    slug: 'english-cefr',
+    name: 'Ingliz tili / CEFR',
+    description: 'Ingliz tili bilimini bosqichma-bosqich rivojlantirish, CEFR va IELTS imtihonlariga tayyorlanish hamda maxsus Kids guruhlari.',
+    price: '200 000 so‘m',
+    duration: '3 oy - 6 oy',
+    schedule_notes: 'Seshanba, payshanba, shanba (16:30–18:30)',
+    levels: [],
+    max_capacity: 15,
+    is_active: 1,
+    groups: [
+      { id: 1, course_id: 1, name: 'Ingliz tili (C1 daraja)', teacher: 'Diyorbek Mirzaolimov (C1)', days: 'Seshanba, payshanba, shanba', time_slot: '16:30–18:30', start_date: '2026-11-03', max_students: 15, is_kids: 0, is_active: 1 },
+      { id: 2, course_id: 1, name: 'Kids guruhi (B2 daraja)', teacher: 'Doniyorbek Mirzaolimov (B2, Kids)', days: 'Seshanba, payshanba, shanba', time_slot: '16:30–18:30', start_date: '2026-11-03', max_students: 12, is_kids: 1, is_active: 1 },
+    ],
+  },
+  {
+    id: 2,
+    slug: 'history',
+    name: 'Tarix',
+    description: 'Tarixiy bilimlarni mustahkamlash, mavzularni o‘rganish va imtihonlarga tayyorlanish.',
+    price: '200 000 so‘m',
+    duration: '4 oy - 8 oy',
+    schedule_notes: 'Seshanba, payshanba, shanba (16:00–18:00)',
+    levels: [],
+    max_capacity: 15,
+    is_active: 1,
+    groups: [
+      { id: 3, course_id: 2, name: 'Tarix (A daraja)', teacher: 'Kholmirzayev Og‘abek (Daraja A)', days: 'Seshanba, payshanba, shanba', time_slot: '16:00–18:00', start_date: '2026-11-03', max_students: 15, is_kids: 0, is_active: 1 },
+    ],
+  },
+];
 
 interface CoursesSectionProps {
   courses: Course[];
@@ -19,12 +58,8 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
   onSelectCourse,
   onOpenDetails,
 }) => {
-  const getCourseImage = (slug: string) => {
-    if (slug === 'english-cefr') {
-      return '/src/assets/images/course_english_cefr_1793011909104.jpg';
-    }
-    return '/src/assets/images/course_history_study_1793011909432.jpg';
-  };
+  const getCourseImage = (slug: string) => (slug === 'english-cefr' ? englishImg : historyImg);
+  const displayCourses = courses && courses.length > 0 ? courses : STATIC_COURSES;
 
   return (
     <section id="courses" className="py-20 bg-slate-50 border-y border-slate-200">
@@ -41,36 +76,13 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
           </p>
         </div>
 
-        {loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {[1, 2].map((i) => (
-              <div
-                key={i}
-                className="bg-white rounded-3xl p-6 border border-slate-200 animate-pulse space-y-4 shadow-xs"
-              >
-                <div className="w-full h-56 bg-slate-200 rounded-2xl" />
-                <div className="h-6 bg-slate-200 rounded w-1/2" />
-                <div className="h-4 bg-slate-200 rounded w-3/4" />
-                <div className="h-10 bg-slate-200 rounded" />
-              </div>
-            ))}
-          </div>
-        ) : error ? (
-          <div className="bg-white border border-red-200 rounded-3xl p-8 text-center max-w-md mx-auto shadow-sm">
-            <AlertCircle className="w-10 h-10 text-red-500 mx-auto mb-3" />
-            <h3 className="text-base font-bold text-slate-900 mb-1">Kurslarni yuklab bo‘lmadi</h3>
-            <p className="text-xs text-slate-500 mb-4">{error}</p>
-            <button
-              onClick={onRetry}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-xl text-xs font-semibold hover:bg-red-700 transition-colors cursor-pointer"
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Qayta urinish</span>
-            </button>
-          </div>
-        ) : (
+        <div className="flex items-center justify-center gap-2 text-sm text-slate-600 mb-10 -mt-8">
+          <MapPin className="w-4 h-4 text-red-600 shrink-0" />
+          <span>Manzil: <strong className="text-slate-900">{CENTER_ADDRESS}</strong></span>
+        </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            {courses.map((course) => {
+            {displayCourses.map((course) => {
               const isEnglish = course.slug === 'english-cefr';
               return (
                 <div
@@ -214,7 +226,6 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
               );
             })}
           </div>
-        )}
       </div>
     </section>
   );
