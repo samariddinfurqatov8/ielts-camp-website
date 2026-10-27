@@ -14,7 +14,7 @@ interface ContactSectionProps {
 export const ContactSection: React.FC<ContactSectionProps> = ({
   onRegisterClick,
   phone = '+998 97 482 06 26',
-  address = 'Jizzax viloyati, Zomin tumani, Yom qishlog‘i',
+  address = "Jizzax viloyati, Zomin tumani, Yom qishlog'i",
   workHours = 'Dushanba – Shanba: 09:00 – 19:00',
   telegramUrl = 'https://t.me/diyorbek_mirzaolim0v',
   telegramUsername = '@diyorbek_mirzaolim0v',
@@ -25,7 +25,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     <section id="contact" className="py-20 bg-slate-50 border-t border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          {/* Left Column: Contact Cards */}
           <div className="lg:col-span-7 space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-50 border border-red-200 text-xs font-bold text-red-600 uppercase tracking-wider">
               <span>Aloqa va Manzil</span>
@@ -40,7 +39,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-              {/* Phone Card */}
               <a
                 href={`tel:${cleanPhone}`}
                 className="p-5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:border-red-300 hover:shadow-md transition-all space-y-2 group block"
@@ -57,7 +55,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 </p>
               </a>
 
-              {/* Telegram Admin Card */}
               <a
                 href={telegramUrl}
                 target="_blank"
@@ -105,7 +102,6 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
             </div>
           </div>
 
-          {/* Right Column: CTA Banner */}
           <div className="lg:col-span-5">
             <div className="bg-slate-950 text-white rounded-3xl p-8 sm:p-10 shadow-2xl border border-slate-800 relative overflow-hidden space-y-6">
               <div className="w-12 h-12 rounded-2xl bg-red-600 text-white flex items-center justify-center shadow-lg shadow-red-600/30">
@@ -117,34 +113,33 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   Kurslarga ro‘yxatdan o‘tishga tayyormisiz?
                 </h3>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  Online ariza qoldiring yoki administratorimiz bilan Telegram orqali to‘g‘ridan-to‘g‘ri bog‘laning.
+                  Arizadan o'tish uchun admin bilan bog'laning.
                 </p>
               </div>
 
               <div className="space-y-3">
                 <button
                   onClick={onRegisterClick}
-                  className="w-full py-3.5 px-6 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2 text-sm cursor-pointer"
+                  className="w-full py-3.5 px-6 bg-red-600 hover:bg-red-700 active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-red-600/30 transition-all flex items-center justify-center gap-2"
                 >
                   <span>Kursga yozilish</span>
                   <Send className="w-4 h-4" />
                 </button>
 
-                {/* Admin bilan bog'lanish — Telegram orqali */}
                 <a
                   href={telegramUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-3.5 px-6 bg-[#229ED9] hover:bg-[#1e8ec3] active:scale-[0.98] text-white font-bold rounded-xl shadow-md shadow-[#229ED9]/25 transition-all flex items-center justify-center gap-2.5 text-sm"
+                  className="w-full py-3.5 px-6 bg-[#229ED9] hover:bg-[#1e8ec3] active:scale-[0.98] text-white font-bold rounded-xl shadow-md shadow-[#229ED9]/25 transition-all flex items-center justify-center gap-2"
                   title={`Admin bilan bog‘lanish (${telegramUsername})`}
                 >
                   <TelegramIcon className="w-4 h-4" />
-                  <span>Admin bilan bog‘lanish ({telegramUsername})</span>
+                  <span>Telegramga yozilish</span>
                 </a>
 
                 <a
                   href={`tel:${cleanPhone}`}
-                  className="w-full py-2.5 px-6 bg-white/10 hover:bg-white/15 text-slate-300 hover:text-white font-semibold rounded-xl border border-white/15 transition-all flex items-center justify-center gap-2 text-xs"
+                  className="w-full py-2.5 px-6 bg-white/10 hover:bg-white/15 text-slate-300 hover:text-white font-semibold rounded-xl border border-white/15 transition-all flex items-center justify-center gap-2"
                 >
                   <Phone className="w-3.5 h-3.5 text-red-400" />
                   <span>Qo‘ng‘iroq: {phone}</span>
@@ -157,4 +152,19 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
     </section>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

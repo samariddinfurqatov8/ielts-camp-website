@@ -1,8 +1,3 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState, useEffect } from 'react';
 import { Course, Group, Teacher, AdminUser, SiteSettings } from './types.js';
 import { Navbar } from './components/Navbar.js';
@@ -20,20 +15,80 @@ import { Footer } from './components/Footer.js';
 import { RegistrationModal } from './components/RegistrationModal.js';
 import { AdminLogin } from './components/AdminLogin.js';
 import { AdminPanel } from './components/AdminPanel.js';
-import { safeFetchJson } from './utils/api.js';
+
+const STATIC_COURSES: Course[] = [
+  {
+    id: 1,
+    slug: 'english-cefr',
+    name: 'Ingliz tili / CEFR',
+    description: 'Ingliz tili bilimini bosqichma-bosqich rivojlantirish, CEFR va IELTS imtihonlariga tayyorlanish hamda maxsus Kids guruhlari.',
+    price: '200 000 so‘m',
+    duration: '3 oy - 6 oy',
+    schedule_notes: 'Seshanba, payshanba, shanba (16:30–18:30)',
+    levels: [],
+    max_capacity: 15,
+    is_active: 1,
+    groups: [
+      {
+        id: 1,
+        course_id: 1,
+        name: 'Ingliz tili (C1 daraja)',
+        teacher: 'Diyorbek Mirzaolimov (C1)',
+        days: 'Seshanba, payshanba, shanba',
+        time_slot: '16:30–18:30',
+        start_date: '2026-11-03',
+        max_capacity: 15,
+        is_kids: 0,
+      },
+      {
+        id: 2,
+        course_id: 1,
+        name: 'Kids guruhi (B2 daraja)',
+        teacher: 'Doniyorbek Mirzaolimov (B2, Kids)',
+        days: 'Seshanba, payshanba, shanba',
+        time_slot: '16:30–18:30',
+        start_date: '2026-11-03',
+        max_capacity: 15,
+        is_kids: 1,
+      },
+    ],
+  },
+  {
+    id: 2,
+    slug: 'history',
+    name: 'Tarix',
+    description: 'Tarixiy bilimlarni mustahkamlash, mavzularni o‘rganish va imtihonlarga tayyorlanish.',
+    price: '200 000 so‘m',
+    duration: '4 oy - 8 oy',
+    schedule_notes: 'Seshanba, payshanba, shanba (16:00–18:00)',
+    levels: [],
+    max_capacity: 15,
+    is_active: 1,
+    groups: [
+      {
+        id: 3,
+        course_id: 2,
+        name: 'Tarix (A daraja)',
+        teacher: 'Kholmirzayev Og‘abek (Daraja A)',
+        days: 'Seshanba, payshanba, shanba',
+        time_slot: '16:00–18:00',
+        start_date: '2026-11-03',
+        max_capacity: 15,
+        is_kids: 0,
+      },
+    ],
+  },
+];
 
 export default function App() {
   const [view, setView] = useState<'site' | 'admin_login' | 'admin_panel'>('site');
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [courses, setCourses] = useState<Course[]>(STATIC_COURSES);
   const [teachers, setTeachers] = useState<Teacher[]>([]);
-  const [coursesLoading, setCoursesLoading] = useState(true);
-  const [coursesError, setCoursesError] = useState<string | null>(null);
 
-  // Site Settings (Phone, address, hero texts, telegram admin)
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({
     phone: '+998 97 482 06 26',
     email: 'info@ieltscamp.uz',
-    address: 'Jizzax viloyati, Zomin tumani, Yom qishlog‘i',
+    address: "Jizzax viloyati, Zomin tumani, Yom qishlog'i",
     hero_title: 'Kelajagingizni bilim bilan quring!',
     hero_subtitle:
       'Ingliz tili, CEFR va tarix fanlaridan bilimlaringizni rivojlantiring. O‘zingizga mos kursni tanlang va IELTS CAMP bilan ta’lim yo‘lingizni boshlang.',
@@ -42,85 +97,23 @@ export default function App() {
     telegram_admin_username: '@diyorbek_mirzaolim0v',
   });
 
-
-  // Registration modal state
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
   const [preselectedCourseId, setPreselectedCourseId] = useState<number | null>(null);
   const [preselectedGroupId, setPreselectedGroupId] = useState<number | null>(null);
-
-  // Course detail modal state
   const [selectedCourseForDetail, setSelectedCourseForDetail] = useState<Course | null>(null);
-
-  // Privacy modal state
   const [isPrivacyOpen, setIsPrivacyOpen] = useState(false);
-
-  // Admin auth state
   const [adminUser, setAdminUser] = useState<AdminUser | null>(null);
   const [adminToken, setAdminToken] = useState<string>('');
 
   useEffect(() => {
-    fetchSettings();
-    fetchCourses();
-    fetchTeachers();
-    checkExistingAdminSession();
-
-    // Support URL paths and hashes: /admin, /admin/login, #admin, #admin/login
     const path = window.location.pathname;
     const hash = window.location.hash;
 
     if (path.startsWith('/admin') || hash.startsWith('#admin')) {
       const savedToken = localStorage.getItem('ielts_camp_admin_token');
-      if (savedToken) {
-        setView('admin_panel');
-      } else {
-        setView('admin_login');
-      }
+      setView(savedToken ? 'admin_panel' : 'admin_login');
     }
   }, []);
-
-  const fetchSettings = async () => {
-    const res = await safeFetchJson<{ settings: SiteSettings }>('/api/settings');
-    if (res.success && res.data?.settings) {
-      setSiteSettings(res.data.settings);
-    }
-  };
-
-  const fetchCourses = async () => {
-    setCoursesLoading(true);
-    setCoursesError(null);
-    const res = await safeFetchJson<{ courses: Course[] }>('/api/courses');
-    if (res.success && res.data?.courses) {
-      setCourses(res.data.courses);
-    } else {
-      setCoursesError(res.error || 'Kurslarni yuklab bo‘lmadi');
-    }
-    setCoursesLoading(false);
-  };
-
-  const fetchTeachers = async () => {
-    const res = await safeFetchJson<{ teachers: Teacher[] }>('/api/teachers');
-    if (res.success && res.data?.teachers) {
-      setTeachers(res.data.teachers);
-    }
-  };
-
-  const checkExistingAdminSession = async () => {
-    const savedToken = localStorage.getItem('ielts_camp_admin_token');
-    if (!savedToken) return;
-
-    const res = await safeFetchJson<{ user: AdminUser }>('/api/admin/me', {
-      headers: {
-        Authorization: `Bearer ${savedToken}`,
-      },
-    });
-
-    if (res.success && res.data?.user) {
-      setAdminUser(res.data.user);
-      setAdminToken(savedToken);
-    } else {
-      localStorage.removeItem('ielts_camp_admin_token');
-    }
-  };
 
   const handleOpenRegister = (courseId?: number, group?: Group) => {
     if (courseId) {
@@ -162,7 +155,6 @@ export default function App() {
   };
 
   const handleAdminLogout = async () => {
-    await safeFetchJson('/api/admin/logout', { method: 'POST' });
     localStorage.removeItem('ielts_camp_admin_token');
     setAdminUser(null);
     setAdminToken('');
@@ -170,7 +162,6 @@ export default function App() {
     window.location.hash = '';
   };
 
-  // Render Admin View
   if (view === 'admin_panel' && adminUser) {
     return (
       <AdminPanel
@@ -180,7 +171,6 @@ export default function App() {
         onViewSite={() => {
           setView('site');
           window.location.hash = '';
-          fetchSettings();
         }}
       />
     );
@@ -198,10 +188,8 @@ export default function App() {
     );
   }
 
-  // Render Public Site
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-red-600 selection:text-white font-sans antialiased">
-      {/* 1. Header & Navigation */}
       <Navbar
         onOpenRegister={() => handleOpenRegister()}
         onOpenAdmin={() => setView(adminUser ? 'admin_panel' : 'admin_login')}
@@ -212,7 +200,6 @@ export default function App() {
       />
 
       <main className="flex-1">
-        {/* 2. Hero Section */}
         <Hero
           onRegisterClick={() => handleOpenRegister()}
           onExploreCourses={() => {
@@ -224,48 +211,38 @@ export default function App() {
           telegramUsername={siteSettings.telegram_admin_username || '@diyorbek_mirzaolim0v'}
         />
 
-        {/* 3. Courses Section */}
         <CoursesSection
           courses={courses}
-          loading={coursesLoading}
-          error={coursesError}
-          onRetry={fetchCourses}
+          loading={false}
+          error={null}
+          onRetry={() => undefined}
           onSelectCourse={(course, group) => handleOpenRegister(course.id, group)}
           onOpenDetails={(course) => setSelectedCourseForDetail(course)}
         />
 
-        {/* 4. Teachers Section */}
         <TeachersSection
           teachers={teachers}
           onEnrollTeacher={handleEnrollTeacher}
         />
 
-        {/* 5. Weekly Schedule Section */}
         <ScheduleSection
           onRegisterGroup={handleRegisterBySlug}
         />
 
-        {/* 6. About Section */}
         <AboutSection />
-
-        {/* 7. Process Section */}
         <ProcessSection />
-
-        {/* 8. FAQ Section */}
         <FaqSection phone={siteSettings.phone} />
 
-        {/* 9. Contact Section */}
         <ContactSection
           onRegisterClick={() => handleOpenRegister()}
           phone={siteSettings.phone}
-          address="Jizzax viloyati, Zomin tumani, Yom qishlog‘i"
+          address="Jizzax viloyati, Zomin tumani, Yom qishlog'i"
           workHours={siteSettings.work_hours}
           telegramUrl={siteSettings.telegram_admin_url || 'https://t.me/diyorbek_mirzaolim0v'}
           telegramUsername={siteSettings.telegram_admin_username || '@diyorbek_mirzaolim0v'}
         />
       </main>
 
-      {/* 10. Footer */}
       <Footer
         onOpenAdmin={() => setView(adminUser ? 'admin_panel' : 'admin_login')}
         onOpenPrivacy={() => setIsPrivacyOpen(true)}
@@ -274,7 +251,6 @@ export default function App() {
         telegramUsername={siteSettings.telegram_admin_username || '@diyorbek_mirzaolim0v'}
       />
 
-      {/* 11. Registration Modal */}
       <RegistrationModal
         isOpen={isRegisterOpen}
         onClose={() => setIsRegisterOpen(false)}
@@ -283,7 +259,6 @@ export default function App() {
         initialGroupId={preselectedGroupId}
       />
 
-      {/* 12. Course Detail Modal */}
       <CourseDetailModal
         course={selectedCourseForDetail}
         isOpen={Boolean(selectedCourseForDetail)}
@@ -294,7 +269,6 @@ export default function App() {
         }}
       />
 
-      {/* 13. Privacy Policy Modal */}
       <PrivacyModal
         isOpen={isPrivacyOpen}
         onClose={() => setIsPrivacyOpen(false)}
@@ -302,3 +276,47 @@ export default function App() {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
