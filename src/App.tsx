@@ -17,7 +17,7 @@ import { FaqSection } from './components/FaqSection.js';
 import { ContactSection } from './components/ContactSection.js';
 import { PrivacyModal } from './components/PrivacyModal.js';
 import { Footer } from './components/Footer.js';
-import { RegistrationModal } from './components/RegistrationModal.js';
+import { EnrollSection } from './components/EnrollSection.js';
 import { AdminLogin } from './components/AdminLogin.js';
 import { AdminPanel } from './components/AdminPanel.js';
 import { safeFetchJson } from './utils/api.js';
@@ -33,7 +33,7 @@ export default function App() {
   const [siteSettings, setSiteSettings] = useState<SiteSettings>({
     phone: '+998 97 482 06 26',
     email: 'info@ieltscamp.uz',
-    address: 'Toshkent shahri, Yunusobod tumani (Mo‘ljal: Shahriston metro yaqinida)',
+    address: 'Jizzax viloyati, Zomin tumani, Yom qishlog‘i',
     hero_title: 'Kelajagingizni bilim bilan quring!',
     hero_subtitle:
       'Ingliz tili, CEFR va tarix fanlaridan bilimlaringizni rivojlantiring. O‘zingizga mos kursni tanlang va IELTS CAMP bilan ta’lim yo‘lingizni boshlang.',
@@ -42,11 +42,6 @@ export default function App() {
     telegram_admin_username: '@diyorbek_mirzaolim0v',
   });
 
-
-  // Registration modal state
-  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
-  const [preselectedCourseId, setPreselectedCourseId] = useState<number | null>(null);
-  const [preselectedGroupId, setPreselectedGroupId] = useState<number | null>(null);
 
   // Course detail modal state
   const [selectedCourseForDetail, setSelectedCourseForDetail] = useState<Course | null>(null);
@@ -122,20 +117,10 @@ export default function App() {
     }
   };
 
-  const handleOpenRegister = (courseId?: number, group?: Group) => {
-    if (courseId) {
-      setPreselectedCourseId(courseId);
-    } else if (courses.length > 0) {
-      setPreselectedCourseId(courses[0].id);
-    }
-
-    if (group) {
-      setPreselectedGroupId(group.id);
-    } else {
-      setPreselectedGroupId(null);
-    }
-
-    setIsRegisterOpen(true);
+  // Ro‘yxatdan o‘tish endi Telegram orqali: barcha "yozilish" tugmalari
+  // "Kurslarga yozilish" blokiga olib boradi.
+  const handleOpenRegister = (_courseId?: number, _group?: Group) => {
+    document.getElementById('enroll')?.scrollIntoView({ behavior: 'smooth' });
   };
 
   const handleRegisterBySlug = (slug: string, isKids?: boolean) => {
@@ -263,24 +248,18 @@ export default function App() {
           telegramUrl={siteSettings.telegram_admin_url || 'https://t.me/diyorbek_mirzaolim0v'}
           telegramUsername={siteSettings.telegram_admin_username || '@diyorbek_mirzaolim0v'}
         />
+
+        {/* 10. Enrollment (Telegram admin) */}
+        <EnrollSection />
       </main>
 
-      {/* 10. Footer */}
+      {/* 11. Footer */}
       <Footer
         onOpenAdmin={() => setView(adminUser ? 'admin_panel' : 'admin_login')}
         onOpenPrivacy={() => setIsPrivacyOpen(true)}
         phone={siteSettings.phone}
         telegramUrl={siteSettings.telegram_admin_url || 'https://t.me/diyorbek_mirzaolim0v'}
         telegramUsername={siteSettings.telegram_admin_username || '@diyorbek_mirzaolim0v'}
-      />
-
-      {/* 11. Registration Modal */}
-      <RegistrationModal
-        isOpen={isRegisterOpen}
-        onClose={() => setIsRegisterOpen(false)}
-        courses={courses}
-        initialCourseId={preselectedCourseId}
-        initialGroupId={preselectedGroupId}
       />
 
       {/* 12. Course Detail Modal */}

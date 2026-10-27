@@ -1,5 +1,7 @@
 import React from 'react';
 import { Course, Group } from '../types.js';
+import { SmartImage } from './SmartImage.js';
+import { images } from '../assets/images/index.js';
 import { ArrowRight, Clock, Calendar, AlertCircle, RefreshCw, Info, CheckCircle, Sparkles } from 'lucide-react';
 
 interface CoursesSectionProps {
@@ -21,9 +23,9 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
 }) => {
   const getCourseImage = (slug: string) => {
     if (slug === 'english-cefr') {
-      return '/src/assets/images/course_english_cefr_1793011909104.jpg';
+      return images.courseEnglish;
     }
-    return '/src/assets/images/course_history_study_1793011909432.jpg';
+    return images.courseHistory;
   };
 
   return (
@@ -79,11 +81,18 @@ export const CoursesSection: React.FC<CoursesSectionProps> = ({
                 >
                   {/* Course Image & Price Badge */}
                   <div className="relative h-64 sm:h-72 w-full overflow-hidden bg-slate-100">
-                    <img
+                    <SmartImage
                       src={getCourseImage(course.slug)}
-                      alt={course.name}
-                      className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-                      referrerPolicy="no-referrer"
+                      alt={
+                        isEnglish
+                          ? `${course.name} — ingliz tili darsiga tayyorlanayotgan o‘quvchi`
+                          : `${course.name} — tarixiy manbalar va xarita ustida ishlayotgan o‘quvchi`
+                      }
+                      width={1200}
+                      height={896}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500"
                     />
                     <div className="absolute top-4 left-4 bg-slate-900/90 backdrop-blur-md text-white text-xs font-bold px-3 py-1.5 rounded-xl border border-white/10">
                       {isEnglish ? 'Ingliz tili / CEFR / Kids' : 'Tarix / DTM / Litsey'}
