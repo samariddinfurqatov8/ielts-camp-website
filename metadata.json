@@ -1,0 +1,6 @@
+{
+  "name": "IELTS CAMP — Kurslarga ro‘yxatdan o‘tish",
+  "description": "IELTS CAMP o‘quv markazining Ingliz tili, CEFR va Tarix kurslariga professional ro‘yxatdan o‘tish platformasi va boshqaruv tizimi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
